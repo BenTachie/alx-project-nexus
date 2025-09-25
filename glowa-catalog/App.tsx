@@ -13,7 +13,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Image source={require("./assets/logo.png")} style={styles.logo} />
+      <Image source={require("./assets/Logo.png")} style={styles.logo} />
     </View>
   );
 }
