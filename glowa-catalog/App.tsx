@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import HomeScreen from "./screens/HomeScreen";
 
-// Prevent splash auto-hiding before app is ready
+// Prevent splash auto-hiding before we’re ready
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
 
   useEffect(() => {
     const prepare = async () => {
-      // Simulate loading
+      // Simulate loading (API calls, fonts, etc.)
       setTimeout(async () => {
         setIsReady(true);
         await SplashScreen.hideAsync();
@@ -21,7 +21,7 @@ export default function App() {
   }, []);
 
   if (!isReady) {
-    // Show splash screen first
+    // Show your custom splash screen first
     return (
       <View style={styles.container}>
         <Image source={require("./assets/Logo.png")} style={styles.logo} />
