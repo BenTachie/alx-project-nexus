@@ -1,0 +1,165 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Shea Moisture Curl Enhancing Smoothie",
+      "description": "Defines curls, reduces frizz, and adds shine for thick curly hair.",
+      "price": 150,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1600185365926-3a2f5032e4e3"
+    },
+    {
+      "id": 2,
+      "title": "CeraVe Hydrating Cleanser",
+      "description": "Gentle cleanser with ceramides and hyaluronic acid for normal to dry skin.",
+      "price": 220,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1629196913238-76f2c3a7e4ef"
+    },
+    {
+      "id": 3,
+      "title": "Fenty Beauty Gloss Bomb",
+      "description": "High-shine lip gloss with a universally flattering shade.",
+      "price": 320,
+      "category": "makeup",
+      "thumbnail": "https://images.unsplash.com/photo-1612817159949-fcb31d3e7f87"
+    },
+    {
+      "id": 4,
+      "title": "Clicks Rooibos Day Cream SPF 15",
+      "description": "Moisturizing cream enriched with rooibos extract and sun protection.",
+      "price": 95,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1607083207084-7ab1f8f52c86"
+    },
+    {
+      "id": 5,
+      "title": "Tresemmé Keratin Smooth Shampoo",
+      "description": "Cleanses and smooths hair with keratin for a silky finish.",
+      "price": 120,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1629196907282-b57f7a79c5aa"
+    },
+    {
+      "id": 6,
+      "title": "Neutrogena Hydro Boost Water Gel",
+      "description": "Oil-free moisturizer with hyaluronic acid for lasting hydration.",
+      "price": 180,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1612817284284-63a3f3f1e1f6"
+    },
+    {
+      "id": 7,
+      "title": "MAC Studio Fix Foundation",
+      "description": "Long-wear foundation with buildable medium-to-full coverage.",
+      "price": 450,
+      "category": "makeup",
+      "thumbnail": "https://images.unsplash.com/photo-1589985279331-f9c0cbd35e58"
+    },
+    {
+      "id": 8,
+      "title": "ORS Olive Oil Hair Lotion",
+      "description": "Nourishes and protects dry, brittle hair with olive oil.",
+      "price": 85,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1586348943529-beaae6c28db9"
+    },
+    {
+      "id": 9,
+      "title": "The Ordinary Niacinamide 10% + Zinc 1%",
+      "description": "Minimizes pores and regulates oil production for clearer skin.",
+      "price": 140,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1629196968695-fb26e2df8bf1"
+    },
+    {
+      "id": 10,
+      "title": "Maybelline Lash Sensational Mascara",
+      "description": "Builds full, voluminous lashes with a curved brush.",
+      "price": 160,
+      "category": "makeup",
+      "thumbnail": "https://images.unsplash.com/photo-1616627986068-b4a0f3f3a97d"
+    },
+    {
+      "id": 11,
+      "title": "Mielle Organics Pomegranate & Honey Leave-In Conditioner",
+      "description": "Moisturizes and detangles thick, curly hair.",
+      "price": 210,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1600185365926-3a2f5032e4e3"
+    },
+    {
+      "id": 12,
+      "title": "Nivea Soft Moisturizing Cream",
+      "description": "Light, non-greasy formula enriched with jojoba oil and vitamin E.",
+      "price": 75,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1607083207084-7ab1f8f52c86"
+    },
+    {
+      "id": 13,
+      "title": "Revlon Super Lustrous Lipstick",
+      "description": "Moisturizing lipstick available in multiple vibrant shades.",
+      "price": 130,
+      "category": "makeup",
+      "thumbnail": "https://images.unsplash.com/photo-1612817159949-fcb31d3e7f87"
+    },
+    {
+      "id": 14,
+      "title": "Dark and Lovely Au Naturale Curl Custard",
+      "description": "Defines and holds curls with a soft finish.",
+      "price": 110,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1629196907282-b57f7a79c5aa"
+    },
+    {
+      "id": 15,
+      "title": "Garnier Micellar Cleansing Water",
+      "description": "Removes makeup and cleanses skin gently without rinsing.",
+      "price": 95,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1629196913238-76f2c3a7e4ef"
+    },
+    {
+      "id": 16,
+      "title": "Essence Lash Princess Mascara",
+      "description": "Budget-friendly mascara that lengthens and volumizes lashes.",
+      "price": 90,
+      "category": "makeup",
+      "thumbnail": "https://images.unsplash.com/photo-1616627986068-b4a0f3f3a97d"
+    },
+    {
+      "id": 17,
+      "title": "L'Oréal Elvive Dream Lengths Conditioner",
+      "description": "Strengthens long hair and prevents breakage.",
+      "price": 140,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1586348943529-beaae6c28db9"
+    },
+    {
+      "id": 18,
+      "title": "Eucerin Aquaphor Healing Ointment",
+      "description": "Multi-purpose ointment for dry, cracked, or irritated skin.",
+      "price": 200,
+      "category": "skincare",
+      "thumbnail": "https://images.unsplash.com/photo-1612817284284-63a3f3f1e1f6"
+    },
+    {
+      "id": 19,
+      "title": "NYX Soft Matte Lip Cream",
+      "description": "Lightweight matte finish lip cream in a variety of shades.",
+      "price": 110,
+      "category": "makeup",
+      "thumbnail": "https://images.unsplash.com/photo-1612817159949-fcb31d3e7f87"
+    },
+    {
+      "id": 20,
+      "title": "Mizani 25 Miracle Milk Leave-In Conditioner",
+      "description": "Lightweight spray with 25 benefits including hydration and detangling.",
+      "price": 250,
+      "category": "haircare",
+      "thumbnail": "https://images.unsplash.com/photo-1600185365926-3a2f5032e4e3"
+    }
+  ],
+  "categories": ["all", "haircare", "skincare", "makeup"]
+}
