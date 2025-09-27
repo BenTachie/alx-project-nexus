@@ -1,66 +1,86 @@
-import { useEffect, useState } from "react";
-import { ScrollView, View, Text, ActivityIndicator } from "react-native";
-import Greeting from "../components/Greeting";
-import SearchBar from "../components/SearchBar";
-import PromoCard from "../components/PromoCard";
-import ProductCard from "../components/ProductCard";
-import BottomNav from "../components/BottomNav";
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
+
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  thumbnail: string;
+}
 
 export default function HomeScreen() {
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  const LIMIT = 10; // items per request
+
+  const fetchProducts = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://dummyjson.com/products?limit=${LIMIT}&skip=${page * LIMIT}`
+      );
+      const data = await response.json();
+
+      if (data.products.length > 0) {
+        setProducts((prev) => [...prev, ...data.products]);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, loading, hasMore]);
 
   useEffect(() => {
-    fetch("https://dummyjson.com/products?limit=10")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.products);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-        setLoading(false);
-      });
-  }, []);
+    fetchProducts();
+  }, [page]);
+
+  // Render each product item
+  const renderItem = ({ item }: { item: Product }) => (
+    <TouchableOpacity className="bg-white m-2 p-4 rounded-lg shadow">
+      <Image
+        source={{ uri: item.thumbnail }}
+        className="w-full h-40 rounded-md"
+        resizeMode="cover"
+      />
+      <Text className="text-lg font-bold mt-2">{item.title}</Text>
+      <Text className="text-gray-600" numberOfLines={2}>
+        {item.description}
+      </Text>
+      <Text className="text-blue-600 font-semibold mt-1">R {item.price}</Text>
+    </TouchableOpacity>
+  );
 
   return (
-    <View className="flex-1 bg-white">
-      <Greeting />
-      <SearchBar />
-      <PromoCard />
-
-      <ScrollView className="mt-5" showsVerticalScrollIndicator={false}>
-        <View className="flex-row justify-between items-center px-5">
-          <Text className="text-lg font-semibold">Popular Now</Text>
-          <Text className="text-sm text-gray-500">See All</Text>
-        </View>
-        <Text className="px-5 mt-1 text-sm text-gray-500">
-          Recommended For You
-        </Text>
-
-        {loading ? (
-          <ActivityIndicator size="large" className="mt-10" />
-        ) : (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            className="mt-3 px-5"
-          >
-            {products.map((product) => (
-              <View key={product.id} className="mr-3">
-                <ProductCard
-                  name={product.title}
-                  desc={product.category}
-                  price={`$${product.price}`}
-                  image={product.thumbnail}
-                />
-              </View>
-            ))}
-          </ScrollView>
-        )}
-      </ScrollView>
-
-      <BottomNav />
+    <View className="flex-1 bg-gray-100">
+      <FlatList
+        data={products}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ padding: 10 }}
+        onEndReached={() => setPage((prev) => prev + 1)} // Load more on scroll
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          loading ? (
+            <ActivityIndicator size="large" color="#2563eb" className="my-4" />
+          ) : null
+        }
+      />
     </View>
   );
 }
