@@ -18,22 +18,22 @@ interface Product {
 }
 
 export default function HomeScreen() {
-  // State variables
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1); 
   const [hasMore, setHasMore] = useState(true);
 
   const LIMIT = 10;
+  const API_URL = "http://localhost:5000"; // Fetch from local JSON server
 
   // Fetch categories
   const fetchCategories = async () => {
     try {
-      const res = await fetch("https://dummyjson.com/products/categories");
+      const res = await fetch(`${API_URL}/categories`);
       const data = await res.json();
-      setCategories(["all", ...data]); // Add "all" option
+      setCategories(data);
     } catch (err) {
       console.error("Error fetching categories:", err);
     }
@@ -45,23 +45,17 @@ export default function HomeScreen() {
 
     setLoading(true);
     try {
-      let url = "";
-      if (selectedCategory === "all") {
-        url = `https://dummyjson.com/products?limit=${LIMIT}&skip=${
-          page * LIMIT
-        }`;
-      } else {
-        url = `https://dummyjson.com/products/category/${selectedCategory}?limit=${LIMIT}&skip=${
-          page * LIMIT
-        }`;
+      let url = `${API_URL}/products?_page=${page}&_limit=${LIMIT}`;
+      if (selectedCategory !== "all") {
+        url += `&category=${selectedCategory}`;
       }
 
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.products.length > 0) {
+      if (data.length > 0) {
         setProducts((prev) =>
-          page === 0 ? data.products : [...prev, ...data.products]
+          page === 1 ? data : [...prev, ...data]
         );
       } else {
         setHasMore(false);
@@ -77,12 +71,14 @@ export default function HomeScreen() {
     fetchCategories();
   }, []);
 
+  // Reset when category changes
   useEffect(() => {
     setProducts([]);
-    setPage(0);
+    setPage(1);
     setHasMore(true);
   }, [selectedCategory]);
 
+  // Fetch products on page/category change
   useEffect(() => {
     fetchProducts();
   }, [page, selectedCategory]);
@@ -114,9 +110,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             key={cat}
             className={`px-4 py-2 mr-2 rounded-full ${
-              selectedCategory === cat
-                ? "bg-blue-600"
-                : "bg-gray-200"
+              selectedCategory === cat ? "bg-blue-600" : "bg-gray-200"
             }`}
             onPress={() => setSelectedCategory(cat)}
           >
@@ -133,7 +127,7 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      {/* Product List with Pagination */}
+      {/* Product List with Infinite Scroll */}
       <FlatList
         data={products}
         renderItem={renderItem}
