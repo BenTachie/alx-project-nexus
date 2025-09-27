@@ -15,25 +15,26 @@ interface Product {
   description: string;
   price: number;
   thumbnail: string;
+  category: string;
 }
 
 export default function HomeScreen() {
+  // State variables
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
   const LIMIT = 10;
-  const API_URL = "http://localhost:5000"; // Fetch from local JSON server
 
   // Fetch categories
   const fetchCategories = async () => {
     try {
-      const res = await fetch(`${API_URL}/categories`);
+      const res = await fetch("http://localhost:3000/categories");
       const data = await res.json();
-      setCategories(data);
+      setCategories(["all", ...data]);
     } catch (err) {
       console.error("Error fetching categories:", err);
     }
@@ -45,18 +46,22 @@ export default function HomeScreen() {
 
     setLoading(true);
     try {
-      let url = `${API_URL}/products?_page=${page}&_limit=${LIMIT}`;
-      if (selectedCategory !== "all") {
-        url += `&category=${selectedCategory}`;
+      let url = "";
+      if (selectedCategory === "all") {
+        url = `http://localhost:3000/products?_limit=${LIMIT}&_page=${
+          page + 1
+        }`;
+      } else {
+        url = `http://localhost:3000/products?category=${selectedCategory}&_limit=${LIMIT}&_page=${
+          page + 1
+        }`;
       }
 
       const response = await fetch(url);
       const data = await response.json();
 
       if (data.length > 0) {
-        setProducts((prev) =>
-          page === 1 ? data : [...prev, ...data]
-        );
+        setProducts((prev) => (page === 0 ? data : [...prev, ...data]));
       } else {
         setHasMore(false);
       }
@@ -71,73 +76,87 @@ export default function HomeScreen() {
     fetchCategories();
   }, []);
 
-  // Reset when category changes
   useEffect(() => {
     setProducts([]);
-    setPage(1);
+    setPage(0);
     setHasMore(true);
   }, [selectedCategory]);
 
-  // Fetch products on page/category change
   useEffect(() => {
     fetchProducts();
   }, [page, selectedCategory]);
 
+  // Card Renderer with better styling
   const renderItem = ({ item }: { item: Product }) => (
-    <TouchableOpacity className="bg-white m-2 p-4 rounded-lg shadow">
+    <TouchableOpacity
+      className="bg-white m-2 p-4 rounded-xl shadow-sm border border-gray-100"
+      activeOpacity={0.8}
+    >
       <Image
         source={{ uri: item.thumbnail }}
-        className="w-full h-40 rounded-md"
+        className="w-full h-44 rounded-lg"
         resizeMode="cover"
       />
-      <Text className="text-lg font-bold mt-2">{item.title}</Text>
-      <Text className="text-gray-600" numberOfLines={2}>
+      <Text className="text-lg font-semibold mt-2 text-gray-900">
+        {item.title}
+      </Text>
+      <Text className="text-gray-500 text-sm mt-1" numberOfLines={2}>
         {item.description}
       </Text>
-      <Text className="text-blue-600 font-semibold mt-1">R {item.price}</Text>
+      <View className="flex-row items-center justify-between mt-2">
+        <Text className="text-blue-600 font-bold text-base">
+          R {item.price}
+        </Text>
+        <Text className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">
+          {item.category}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 
   return (
-    <View className="flex-1 bg-gray-100">
+    <View className="flex-1 bg-gray-50">
       {/* Category Filter Bar */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="p-2 bg-white"
+        className="p-3 bg-white shadow-sm"
       >
         {categories.map((cat) => (
           <TouchableOpacity
             key={cat}
-            className={`px-4 py-2 mr-2 rounded-full ${
-              selectedCategory === cat ? "bg-blue-600" : "bg-gray-200"
+            className={`px-5 py-2 mr-3 rounded-full border ${
+              selectedCategory === cat
+                ? "bg-blue-600 border-blue-600"
+                : "bg-gray-100 border-gray-200"
             }`}
             onPress={() => setSelectedCategory(cat)}
+            activeOpacity={0.7}
           >
             <Text
-              className={`${
+              className={`capitalize ${
                 selectedCategory === cat
-                  ? "text-white font-semibold"
-                  : "text-gray-700"
+                  ? "text-white font-medium"
+                  : "text-gray-700 font-normal"
               }`}
             >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              {cat}
             </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
 
-      {/* Product List with Infinite Scroll */}
+      {/* Product List with Pagination */}
       <FlatList
         data={products}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ padding: 10 }}
+        contentContainerStyle={{ padding: 8 }}
         onEndReached={() => setPage((prev) => prev + 1)}
         onEndReachedThreshold={0.5}
         ListFooterComponent={
           loading ? (
-            <ActivityIndicator size="large" color="#2563eb" className="my-4" />
+            <ActivityIndicator size="large" color="#2563eb" className="my-6" />
           ) : null
         }
       />
