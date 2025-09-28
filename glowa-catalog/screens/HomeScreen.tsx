@@ -9,6 +9,9 @@ import {
   ScrollView,
 } from "react-native";
 
+const API_URL = "https://glowa-json-server.vercel.app";
+
+
 interface Product {
   id: number;
   title: string;
@@ -43,22 +46,20 @@ export default function HomeScreen() {
   // Fetch products (with optional category)
   const fetchProducts = useCallback(async () => {
     if (loading || !hasMore) return;
-
     setLoading(true);
-    try {
+
+   try {
       let url = "";
       if (selectedCategory === "all") {
-        url = `http://localhost:3000/products?_limit=${LIMIT}&_page=${
-          page + 1
-        }`;
+        url = `${API_URL}/products?_limit=${LIMIT}&_page=${page + 1}`;
       } else {
-        url = `http://localhost:3000/products?category=${selectedCategory}&_limit=${LIMIT}&_page=${
+        url = `${API_URL}/products?category=${selectedCategory}&_limit=${LIMIT}&_page=${
           page + 1
         }`;
       }
 
       const response = await fetch(url);
-      const data = await response.json();
+      const data: Product[] = await response.json();
 
       if (data.length > 0) {
         setProducts((prev) => (page === 0 ? data : [...prev, ...data]));
@@ -86,7 +87,7 @@ export default function HomeScreen() {
     fetchProducts();
   }, [page, selectedCategory]);
 
-  // Card Renderer with better styling
+  // Product card 
   const renderItem = ({ item }: { item: Product }) => (
     <TouchableOpacity
       className="bg-white m-2 p-4 rounded-xl shadow-sm border border-gray-100"
@@ -116,7 +117,7 @@ export default function HomeScreen() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      {/* Category Filter Bar */}
+      {/* Category Filter */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -146,7 +147,7 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      {/* Product List with Pagination */}
+      {/* Product List */}
       <FlatList
         data={products}
         renderItem={renderItem}
